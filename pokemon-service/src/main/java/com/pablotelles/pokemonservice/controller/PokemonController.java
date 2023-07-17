@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pablotelles.pokemonservice.entity.Pokemon;
+import com.pablotelles.pokemonservice.model.Review;
 import com.pablotelles.pokemonservice.service.implementation.PokemonServiceImpl;
 
 @RestController
@@ -56,4 +57,8 @@ public class PokemonController {
         return new ResponseEntity<String>("Pokemon Deleted", HttpStatus.ACCEPTED);
     }
     
+    @GetMapping("/reviews/{pokemonId}")
+    public ResponseEntity<List<Review>> getReviews(@PathVariable("pokemonId") Long pokemonId){
+        return new ResponseEntity<List<Review>>(pokemonServiceImpl.getReviews(pokemonId), HttpStatus.OK);
+    }
 }

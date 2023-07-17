@@ -58,5 +58,10 @@ public class ReviewServiceImpl implements ReviewService{
         Review review2 = reviewRepository.findById(id).orElseThrow(() -> new ReviewNotFoundException("Review Not Found"));
         reviewRepository.delete(review2);
     }
+
+    @Override
+    public List<Review> getByPokemonId(Long pokemonId) {
+        return reviewRepository.findByPokemonId(pokemonId);
+    }
     
 }

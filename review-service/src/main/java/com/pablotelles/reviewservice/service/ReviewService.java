@@ -10,4 +10,5 @@ public interface ReviewService {
     List<Review> getAllReview();
     Review updateReview(Review review, Long id);
     void deleteReview(Long id);
+    List<Review> getByPokemonId(Long pokemonId);
 }

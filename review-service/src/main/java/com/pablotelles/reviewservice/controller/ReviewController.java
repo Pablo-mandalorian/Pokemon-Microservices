@@ -56,4 +56,9 @@ public class ReviewController {
         return new ResponseEntity<>("Review Deleted", HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/pokemon/{pokemonId}")
+    public ResponseEntity<List<Review>> getAllReviewsByPokemonId(@PathVariable("pokemonId") Long pokemonId){
+        return new ResponseEntity<>(reviewServiceImpl.getByPokemonId(pokemonId), HttpStatus.OK);
+    }
+
 }

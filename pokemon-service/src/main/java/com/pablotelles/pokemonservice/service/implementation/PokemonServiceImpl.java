@@ -1,6 +1,8 @@
 package com.pablotelles.pokemonservice.service.implementation;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.pablotelles.pokemonservice.entity.Pokemon;
 import com.pablotelles.pokemonservice.exceptions.PokemonNotFoundException;
+import com.pablotelles.pokemonservice.feignclients.ReviewFeignClient;
 import com.pablotelles.pokemonservice.model.Review;
 import com.pablotelles.pokemonservice.repository.PokemonRepository;
 import com.pablotelles.pokemonservice.service.PokemonService;
@@ -22,10 +25,13 @@ public class PokemonServiceImpl implements PokemonService {
 
     private final RestTemplate restTemplate;
 
+    private final ReviewFeignClient reviewFeignClient;
+
     @Autowired
-    public PokemonServiceImpl(PokemonRepository pokemonRepository, RestTemplate restTemplate) {
+    public PokemonServiceImpl(PokemonRepository pokemonRepository, RestTemplate restTemplate, ReviewFeignClient reviewFeignClient) {
         this.pokemonRepository = pokemonRepository;
         this.restTemplate = restTemplate;
+        this.reviewFeignClient = reviewFeignClient;
     }
 
     @Override
@@ -64,9 +70,35 @@ public class PokemonServiceImpl implements PokemonService {
         pokemonRepository.delete(pokemonToDelete);
     }
 
+    @Override
     public List<Review> getReviews(Long pokemonId){
         List<Review> reviews = restTemplate.getForObject("http://localhost:8002/api/v1/review/pokemon/"+pokemonId, List.class);
         return reviews;
     }
-    
+
+    @Override
+    public Review saveReview(Long pokemonId, Review review){
+        review.setPokemonId(pokemonId);
+        Review newReview = reviewFeignClient.saveReview(review);
+        return newReview;
+    }
+
+    @Override
+    public Map<String, Object> getPokemonAndReviews(Long pokemonId) {
+        Map<String, Object> result = new HashMap<>();
+        Pokemon pokemon = pokemonRepository.findById(pokemonId).orElse(null);
+        if(pokemon==null){
+            result.put("Mensaje:", "No existe el usuario");
+            return result;
+        }
+        result.put("Pokemon", pokemon);
+        List<Review> reviews = reviewFeignClient.getReviews(pokemonId);
+        if(reviews.isEmpty()){
+            result.put("Reviews", "Este pokemon no tiene reviews");
+        }else{
+            result.put("Reviews", reviews);
+        }
+        return result;
+    }
+
 }

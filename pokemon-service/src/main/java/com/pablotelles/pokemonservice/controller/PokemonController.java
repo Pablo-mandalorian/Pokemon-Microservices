@@ -1,6 +1,7 @@
 package com.pablotelles.pokemonservice.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -60,5 +61,16 @@ public class PokemonController {
     @GetMapping("/reviews/{pokemonId}")
     public ResponseEntity<List<Review>> getReviews(@PathVariable("pokemonId") Long pokemonId){
         return new ResponseEntity<List<Review>>(pokemonServiceImpl.getReviews(pokemonId), HttpStatus.OK);
+    }
+
+    @PostMapping("/{pokemonId}")
+    public ResponseEntity<Review> saveReview(@PathVariable("pokemonId") Long pokemonId, @RequestBody Review review){
+        return new ResponseEntity<>(pokemonServiceImpl.saveReview(pokemonId, review), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/id/{pokemonId}")
+    public ResponseEntity<Map<String,Object>> getReviewByPokemonId(@PathVariable("pokemonId") Long pokemonId){
+        Map<String,Object> result = pokemonServiceImpl.getPokemonAndReviews(pokemonId);
+        return ResponseEntity.ok(result);
     }
 }

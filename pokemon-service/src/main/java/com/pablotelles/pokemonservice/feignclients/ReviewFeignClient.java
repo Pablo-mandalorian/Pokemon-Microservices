@@ -13,9 +13,9 @@ import com.pablotelles.pokemonservice.model.Review;
 @FeignClient(name = "review-service")
 public interface ReviewFeignClient {
     
-    @PostMapping("/create")
+    @PostMapping("/api/v1/review/create")
     Review saveReview(@RequestBody Review review);
 
-    @GetMapping("/pokemon/{pokemonId}")
+    @GetMapping("/api/v1/review/pokemon/{pokemonId}")
     List<Review> getReviews(@PathVariable("pokemonId") Long pokemonId);
 }

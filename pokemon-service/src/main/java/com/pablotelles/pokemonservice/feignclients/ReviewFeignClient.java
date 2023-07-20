@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.pablotelles.pokemonservice.model.Review;
 
-@FeignClient(name = "review-service", url = "http://localhost:8002/api/v1/review")
+@FeignClient(name = "review-service")
 public interface ReviewFeignClient {
     
     @PostMapping("/create")

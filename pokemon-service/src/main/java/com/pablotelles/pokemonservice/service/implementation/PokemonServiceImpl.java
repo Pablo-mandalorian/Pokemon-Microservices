@@ -72,7 +72,7 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Override
     public List<Review> getReviews(Long pokemonId){
-        List<Review> reviews = restTemplate.getForObject("http://localhost:8002/api/v1/review/pokemon/"+pokemonId, List.class);
+        List<Review> reviews = restTemplate.getForObject("http://review-service/api/v1/review/pokemon/"+pokemonId, List.class);
         return reviews;
     }
 

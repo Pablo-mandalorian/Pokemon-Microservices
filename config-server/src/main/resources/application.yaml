@@ -5,7 +5,7 @@ spring:
         config:
             server:
                 git:
-                    default-label: Config-Server
+                    default-label: Eureka
                     uri: https://github.com/Pablo-mandalorian/Pokemon-Microservices
                     search-paths: config-data
     application: 

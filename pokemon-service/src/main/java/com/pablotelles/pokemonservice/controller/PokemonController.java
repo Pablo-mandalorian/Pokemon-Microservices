@@ -20,6 +20,8 @@ import com.pablotelles.pokemonservice.entity.Pokemon;
 import com.pablotelles.pokemonservice.model.Review;
 import com.pablotelles.pokemonservice.service.implementation.PokemonServiceImpl;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 @RestController
 @RequestMapping("/api/v1/pokemon")
 public class PokemonController {
@@ -58,19 +60,34 @@ public class PokemonController {
         return new ResponseEntity<String>("Pokemon Deleted", HttpStatus.ACCEPTED);
     }
     
+    @CircuitBreaker(name = "reviewA", fallbackMethod = "fallBackGetReviews")
     @GetMapping("/reviews/{pokemonId}")
     public ResponseEntity<List<Review>> getReviews(@PathVariable("pokemonId") Long pokemonId){
         return new ResponseEntity<List<Review>>(pokemonServiceImpl.getReviews(pokemonId), HttpStatus.OK);
     }
 
+    @CircuitBreaker(name = "reviewA", fallbackMethod = "fallBackSaveReview")
     @PostMapping("/{pokemonId}")
     public ResponseEntity<Review> saveReview(@PathVariable("pokemonId") Long pokemonId, @RequestBody Review review){
         return new ResponseEntity<>(pokemonServiceImpl.saveReview(pokemonId, review), HttpStatus.CREATED);
     }
 
+    @CircuitBreaker(name = "reviewA", fallbackMethod = "fallBackGetReviewByPokemonId")
     @GetMapping("/id/{pokemonId}")
     public ResponseEntity<Map<String,Object>> getReviewByPokemonId(@PathVariable("pokemonId") Long pokemonId){
         Map<String,Object> result = pokemonServiceImpl.getPokemonAndReviews(pokemonId);
         return ResponseEntity.ok(result);
+    }
+
+    private ResponseEntity<List<Review>> fallBackGetReviews(@PathVariable("pokemonId") Long pokemonId, RuntimeException e){
+        return new ResponseEntity("El Pokemon"+pokemonId+" no tiene reviews", HttpStatus.OK);
+    }
+
+    private ResponseEntity<Review> fallBackSaveReview(@PathVariable("pokemonId") Long pokemonId, @RequestBody Review review,RuntimeException e){
+        return new ResponseEntity("No tienes Pokebolas", HttpStatus.OK);
+    }
+
+    private ResponseEntity<Map<String,Object>> fallBackGetReviewByPokemonId(@PathVariable("pokemonId") Long pokemonId){
+        return new ResponseEntity("El Pokemon"+pokemonId+" no tiene ninguna review", HttpStatus.OK);
     }
 }

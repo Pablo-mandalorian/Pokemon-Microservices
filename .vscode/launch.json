@@ -50,6 +50,17 @@
             "mainClass": "com.pablotelles.apigatewayservice.ApiGatewayServiceApplication",
             "projectName": "api-gateway-service",
             "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=3798 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=api-gateway-service"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-IdentityServiceApplication<identity-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.pablotelles.identityservice.IdentityServiceApplication",
+            "projectName": "identity-service",
+            "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
     ]

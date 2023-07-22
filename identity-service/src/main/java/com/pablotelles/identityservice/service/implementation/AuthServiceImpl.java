@@ -2,11 +2,13 @@ package com.pablotelles.identityservice.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.pablotelles.identityservice.entity.UserCredential;
 import com.pablotelles.identityservice.repository.UserCredentialRepository;
 import com.pablotelles.identityservice.service.AuthService;
 
+@Service
 public class AuthServiceImpl implements AuthService{
 
     @Autowired

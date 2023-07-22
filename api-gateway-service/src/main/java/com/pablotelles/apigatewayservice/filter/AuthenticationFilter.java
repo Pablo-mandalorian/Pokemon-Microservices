@@ -6,7 +6,9 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.http.HttpHeaders;
 
 import com.pablotelles.apigatewayservice.util.JwtUtil;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config>{
     
     @Autowired

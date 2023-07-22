@@ -20,7 +20,15 @@ spring:
           uri: lb://pokemon-service
           predicates: 
             - Path= /api/v1/pokemon/**
+          filters:
+           - AuthenticationFilter
         - id: review-service
           uri: lb://review-service
           predicates: 
             - Path= /api/v1/review/**
+          filters:
+           - AuthenticationFilter  
+        - id: identity-service
+          uri: lb://identity-service
+          predicates:
+            - Path=/auth/** 
